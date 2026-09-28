@@ -18,11 +18,16 @@ public class GameManager : Singleton<GameManager>
     /// 切换游戏状态
     /// </summary>
     /// <param name="gameState"></param>
-    public void SwitchState(GameState newState)
+    public void SwitchState(GameState newStates)
     {
-        CurrentState=newState;
+        GameStateChangeData data=new GameStateChangeData()
+        {
+            oldState=CurrentState,
+            newState=newStates
+        };
+        CurrentState=newStates;
         //广播切换状态
-        EventCenter.instance.TriggerEvent(GameEvent.GameStateChange,newState);
+        EventCenter.instance.TriggerEvent(GameEvent.GameStateChange,data);
     } 
 
     #region 各个游戏状态的转换
@@ -31,6 +36,7 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     public void StartGame()
     {
+        Time.timeScale=1;
         //加载场景
         SceneManager.LoadScene("GameScene");
         SwitchState(GameState.GamePlaying);
@@ -41,9 +47,9 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     public void BackToLogin()
     {
+        Time.timeScale=1;
         SceneManager.LoadScene("GameLogin");
         SwitchState(GameState.Login);
-        EventCenter.instance.Clear(); //旧场景事件全部清除
     }
 
     /// <summary>
@@ -66,7 +72,7 @@ public class GameManager : Singleton<GameManager>
     {
         if (CurrentState == GameState.GamePause)
         {
-            CurrentState=GameState.GamePlaying;
+            SwitchState(GameState.GamePlaying);
             Time.timeScale=1;
             EventCenter.instance.TriggerEvent(GameEvent.ResumGame);
         }

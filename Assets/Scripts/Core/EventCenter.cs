@@ -45,7 +45,9 @@ public class EventCenter : Singleton<EventCenter>
     {
         if(eventDic.TryGetValue(eventName,out var action))
         {
-            eventDic[eventName]-=action;
+            action-=callback;
+            if(action==null)eventDic.Remove(eventName);
+            else eventDic[eventName]=action;
         }
     }
 
