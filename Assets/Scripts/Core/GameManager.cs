@@ -9,11 +9,30 @@ public class GameManager : Singleton<GameManager>
     /// 当前游戏状态
     /// </summary>
      public GameState CurrentState{get;private set;}
-     //游戏状态初始化
+
+    protected override void Awake()
+    {
+        base.Awake();
+        if(instance!=this)return;
+        //监听UI按钮
+        EventCenter.instance.AddEventListener(GameEvent.StartGameClick,OnStartGameClick);
+        EventCenter.instance.AddEventListener(GameEvent.BackToLoginClick,OnStartGameClick);
+    }
+
+    private void OnDestroy()
+    {
+        EventCenter.instance.RemoveEventListener(GameEvent.StartGameClick, OnStartGameClick);
+        EventCenter.instance.RemoveEventListener(GameEvent.BackToLoginClick, OnBackToLoginClick);
+    }
+    //游戏状态初始化
     private void Start()
     {
         SwitchState(GameState.Login);
     }
+
+    //事件回调
+    private void OnStartGameClick(object param)=>StartGame();
+    private void OnBackToLoginClick(object param)=>BackToLogin();
     /// <summary>
     /// 切换游戏状态
     /// </summary>

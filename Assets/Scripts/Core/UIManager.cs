@@ -23,6 +23,7 @@ public class UIManager : Singleton<UIManager>
     {
         base.Awake();
         if(instance!=this)return;
+        EventCenter.instance.AddEventListener(GameEvent.GameStateChange,OnGameStateChange);
         InitPanel();
     }
 
@@ -31,6 +32,7 @@ public class UIManager : Singleton<UIManager>
     /// </summary>
     public void InitPanel()
     {
+        panelDic.Clear();
         panelDic.Add(UIPanelType.LoginPanel,loginPanel);
         panelDic.Add(UIPanelType.GameHudPanel,gameHudPanel);
         panelDic.Add(UIPanelType.PausePanle,pausePanel);
@@ -45,7 +47,7 @@ public class UIManager : Singleton<UIManager>
     {
         foreach(var panel in panelDic.Values)
         {
-            panel.SetActive(false);
+            if(panel!=null) panel.SetActive(false);
         }
 
         // 旧方法

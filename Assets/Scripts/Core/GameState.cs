@@ -4,6 +4,7 @@ using UnityEngine;
 
 public enum GameState
 {
+    None=0,
     /// <summary>
     /// 登陆页面
     /// </summary>
