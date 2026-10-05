@@ -27,6 +27,7 @@ public class UILoginPanel : MonoBehaviour
         if (startButton != null)
         {
            startButton.onClick.RemoveListener(OnStartGmaeBtnClick);
+        }
     }
     private void OnStartGmaeBtnClick()
     {

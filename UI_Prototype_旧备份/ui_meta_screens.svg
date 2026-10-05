@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+<defs>
+ <linearGradient id="p" x2="0" y2="1"><stop stop-color="#253248"/><stop offset="1" stop-color="#0a0f17"/></linearGradient>
+ <linearGradient id="v"><stop stop-color="#6c54ff"/><stop offset="1" stop-color="#23a8ff"/></linearGradient>
+ <linearGradient id="g"><stop stop-color="#fff0a0"/><stop offset=".55" stop-color="#d49b3d"/><stop offset="1" stop-color="#6b3d14"/></linearGradient>
+ <linearGradient id="r"><stop stop-color="#ff5d56"/><stop offset="1" stop-color="#8f1528"/></linearGradient>
+ <filter id="glow"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<rect width="1600" height="1000" fill="#070a10"/>
+<!-- character select -->
+<g id="character-select"><rect x="60" y="60" width="700" height="400" rx="26" fill="url(#p)" stroke="url(#g)" stroke-width="7"/><rect x="90" y="100" width="250" height="300" rx="18" fill="#111a2b" stroke="#596fff" stroke-width="5"/><circle cx="215" cy="210" r="70" fill="#202b56" stroke="#8b7cff" stroke-width="6"/><path d="M165 330q50-75 100 0" fill="#3f52a5" stroke="#a7b3ff" stroke-width="5"/><path d="M390 135h300M390 175h230M390 235h270M390 275h180M390 330h280" stroke="#7885a8" stroke-width="12" stroke-linecap="round"/><rect x="390" y="365" width="180" height="46" rx="14" fill="#17385f" stroke="#72a8ff" stroke-width="4"/></g>
+<!-- weapon select -->
+<g id="weapon-select"><rect x="820" y="60" width="720" height="400" rx="26" fill="url(#p)" stroke="url(#g)" stroke-width="7"/><g fill="#111a29" stroke="#5d6fff" stroke-width="5"><rect x="860" y="115" width="140" height="140" rx="18"/><rect x="1030" y="115" width="140" height="140" rx="18"/><rect x="1200" y="115" width="140" height="140" rx="18"/><rect x="1370" y="115" width="120" height="140" rx="18"/></g><path d="M885 230l90-90M1055 220l90-80M1220 220l100-90M1390 220l80-90" stroke="#b8c2ff" stroke-width="12"/><rect x="880" y="305" width="560" height="46" rx="14" fill="#131c2c" stroke="#7585b4" stroke-width="4"/><rect x="880" y="375" width="220" height="46" rx="14" fill="#4a3415" stroke="#e4b54c" stroke-width="4"/></g>
+<!-- loadout -->
+<g id="loadout"><rect x="60" y="520" width="420" height="400" rx="26" fill="url(#p)" stroke="url(#v)" stroke-width="7"/><g fill="#0e1724" stroke="#c79740" stroke-width="5"><rect x="110" y="590" width="120" height="120" rx="18"/><rect x="280" y="590" width="120" height="120" rx="18"/><rect x="110" y="750" width="120" height="120" rx="18"/><rect x="280" y="750" width="120" height="120" rx="18"/></g><circle cx="170" cy="650" r="36" fill="#c63e4c"/><path d="M150 650h40M170 630v40" stroke="#ffe0d2" stroke-width="8"/><circle cx="340" cy="650" r="36" fill="#665aff"/><path d="M320 650h40M340 630v40" stroke="#e7e4ff" stroke-width="8"/></g>
+<!-- codex -->
+<g id="codex"><rect x="540" y="520" width="470" height="400" rx="26" fill="url(#p)" stroke="url(#g)" stroke-width="7"/><path d="M590 600h370M590 660h300M590 720h350M590 780h260M590 840h320" stroke="#687795" stroke-width="12" stroke-linecap="round"/><circle cx="620" cy="600" r="20" fill="#dfb24d"/><circle cx="620" cy="660" r="20" fill="#675dff"/><circle cx="620" cy="720" r="20" fill="#e65a5b"/><circle cx="620" cy="780" r="20" fill="#66bdff"/><circle cx="620" cy="840" r="20" fill="#8893a8"/></g>
+<!-- meta upgrades -->
+<g id="meta-upgrade"><rect x="1070" y="520" width="470" height="400" rx="26" fill="url(#p)" stroke="url(#r)" stroke-width="7"/><g fill="#121b2a" stroke="#be8f3b" stroke-width="4"><rect x="1120" y="590" width="370" height="58" rx="16"/><rect x="1120" y="680" width="370" height="58" rx="16"/><rect x="1120" y="770" width="370" height="58" rx="16"/></g><path d="M1150 620h170M1150 710h210M1150 800h190" stroke="#8998b7" stroke-width="10" stroke-linecap="round"/><circle cx="1440" cy="620" r="18" fill="#d9a443"/><circle cx="1440" cy="710" r="18" fill="#6f62ff"/><circle cx="1440" cy="800" r="18" fill="#db5257"/></g>
+</svg>

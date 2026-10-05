@@ -19,6 +19,11 @@ public static class GameEvent
     /// </summary>
     public const string ResumGame="ResumGame";
 
+    /// <summary>
+    /// 玩家攻击怪物事件
+    /// </summary>
+    public const string PlayerAttack="PlayerAttack";
+
     #region UI
     /// <summary>
     /// 点击开始游戏

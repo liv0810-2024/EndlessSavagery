@@ -16,7 +16,7 @@ public class GameManager : Singleton<GameManager>
         if(instance!=this)return;
         //监听UI按钮
         EventCenter.instance.AddEventListener(GameEvent.StartGameClick,OnStartGameClick);
-        EventCenter.instance.AddEventListener(GameEvent.BackToLoginClick,OnStartGameClick);
+        EventCenter.instance.AddEventListener(GameEvent.BackToLoginClick,OnBackToLoginClick);
     }
 
     private void OnDestroy()
