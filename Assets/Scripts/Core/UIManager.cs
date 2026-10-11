@@ -90,22 +90,6 @@ public class UIManager : Singleton<UIManager>
     }
 
     /// <summary>
-    /// 注册监听ui事件
-    /// </summary>
-    private void OnEnable()
-    {
-        EventCenter.instance.AddEventListener(GameEvent.GameStateChange,OnGameStateChange);
-    }
-
-    /// <summary>
-    /// 取消ui监听
-    /// </summary>
-    private void OnDisable()
-    {
-        EventCenter.instance.RemoveEventListener(GameEvent.GameStateChange,OnGameStateChange);
-    }
-
-    /// <summary>
     /// 收到游戏状态变化，自动切换ui
     /// </summary>
     /// <param name="param"></param>

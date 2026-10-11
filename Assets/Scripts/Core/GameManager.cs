@@ -27,7 +27,12 @@ public class GameManager : Singleton<GameManager>
     //游戏状态初始化
     private void Start()
     {
-        SwitchState(GameState.Login);
+        // 直接 Play 战斗场景时，自动进入对局状态，方便单独调试战斗场景
+        // 从登录场景开始时，才保持 Login 状态
+        if (SceneManager.GetActiveScene().name == "GameScene")
+            SwitchState(GameState.GamePlaying);
+        else
+            SwitchState(GameState.Login);
     }
 
     //事件回调
@@ -45,6 +50,8 @@ public class GameManager : Singleton<GameManager>
             newState=newStates
         };
         CurrentState=newStates;
+        //打日志：随时能在 Console 看到状态变成了什么，方便排查"为什么角色不动"这类问题
+        Debug.Log($"[GameManager] 状态切换：{data.oldState} → {data.newState}");
         //广播切换状态
         EventCenter.instance.TriggerEvent(GameEvent.GameStateChange,data);
     } 
