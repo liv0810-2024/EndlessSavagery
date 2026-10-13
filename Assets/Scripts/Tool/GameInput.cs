@@ -4,15 +4,22 @@ using UnityEngine;
 
 public class GameInput : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private void Update()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (GameManager.instance.CurrentState != GameState.GamePause)
+            {
+                GameManager.instance.PauseGame();
+            }
+            else
+            {
+                GameManager.instance.ResumeGame();
+            }
+        }
+        else
+        {
+            return;
+        }
     }
 }

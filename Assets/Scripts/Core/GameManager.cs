@@ -17,12 +17,14 @@ public class GameManager : Singleton<GameManager>
         //监听UI按钮
         EventCenter.instance.AddEventListener(GameEvent.StartGameClick,OnStartGameClick);
         EventCenter.instance.AddEventListener(GameEvent.BackToLoginClick,OnBackToLoginClick);
+        EventCenter.instance.AddEventListener(GameEvent.ResumeClick,OnResumeClick);
     }
 
     private void OnDestroy()
     {
         EventCenter.instance.RemoveEventListener(GameEvent.StartGameClick, OnStartGameClick);
         EventCenter.instance.RemoveEventListener(GameEvent.BackToLoginClick, OnBackToLoginClick);
+        EventCenter.instance.RemoveEventListener(GameEvent.ResumeClick, OnResumeClick);  
     }
     //游戏状态初始化
     private void Start()
@@ -38,6 +40,7 @@ public class GameManager : Singleton<GameManager>
     //事件回调
     private void OnStartGameClick(object param)=>StartGame();
     private void OnBackToLoginClick(object param)=>BackToLogin();
+    private void OnResumeClick(object param)=>ResumeGame(); 
     /// <summary>
     /// 切换游戏状态
     /// </summary>
