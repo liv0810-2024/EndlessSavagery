@@ -122,7 +122,12 @@ public class PlayerController : MonoBehaviour
         // 以自身为球心，attackRange 为半径，只检测 Monster 层
         Collider[] hits = Physics.OverlapSphere(transform.position, attackRange, monsterLayer);
         if (hits.Length == 0) return;
-        EventCenter.instance.TriggerEvent(GameEvent.PlayerAttack, atk);
+        PlayerAttackData data=new PlayerAttackData
+        {
+            damage=atk,
+            hits=hits
+        };
+        EventCenter.instance.TriggerEvent(GameEvent.PlayerAttack, data);
         //Debug.Log($"[Player] 发动攻击，命中 {hits.Length} 个目标，伤害 {atk}");
     }
 

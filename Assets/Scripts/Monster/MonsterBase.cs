@@ -15,7 +15,15 @@ public class MonsterBase : MonoBehaviour
     [Header("动画外观")]
     [SerializeField] private Animator visualAnimator;
 
+    [Header("战斗信息")]
+    [SerializeField]private float maxHp=30f;
+    /// <summary>
+    /// 当前血量
+    /// </summary>
+    private float hp;
+
     private static readonly int SpeedHash = Animator.StringToHash("Speed");
+
 
     private void Awake()
     {
@@ -55,6 +63,17 @@ public class MonsterBase : MonoBehaviour
         UpdateAnimator();
     }
 
+    private void OnEnable()
+    {
+        hp=maxHp;
+        EventCenter.instance.AddEventListener(GameEvent.PlayerAttack,OnPlayerAttack);
+    }
+
+    private void OnDisable()
+    {
+        EventCenter.instance.RemoveEventListener(GameEvent.PlayerAttack,OnPlayerAttack);
+    }
+
     /// <summary>
     /// 追逐玩家
     /// </summary>
@@ -89,5 +108,43 @@ public class MonsterBase : MonoBehaviour
     {
         if (visualAnimator == null) return;
         visualAnimator.SetFloat(SpeedHash, moveDir.sqrMagnitude > 0.01f ? 1f : 0f);
+    }
+
+    /// <summary>
+    /// 收到玩家攻击事件：只有【自己在命中名单里】才掉血
+    /// </summary>
+    /// <param name="param"></param>
+    private void OnPlayerAttack(object param)
+    {
+        PlayerAttackData data=param as PlayerAttackData;
+        if(data==null)return;
+        foreach(Collider hit in data.hits)
+        {
+            if(hit==null)continue;
+            if(hit.gameObject!=gameObject)continue; //怪物判断如果打的不是我跳过
+            TakeDamage(data.damage);
+            return; //一次攻击只减一次血
+        }
+    }
+
+    /// <summary>
+    /// 扣血
+    /// </summary>
+    /// <param name="damage"></param>
+    private void TakeDamage(float damage)
+    {
+        hp-=damage;
+        if (hp <= 0)
+        {
+            Die();
+        }
+    }
+
+    /// <summary>
+    /// 死亡
+    /// </summary>
+    private void Die()
+    {
+        Destroy(gameObject);
     }
 }
