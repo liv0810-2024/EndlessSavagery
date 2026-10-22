@@ -11,7 +11,14 @@ SETS = [
 ]
 
 for folder, stem, frames in SETS:
-    images = [Image.open(folder / f"{stem}_{frame:02d}.png").convert("RGB") for frame in frames]
-    images[0].save(folder / f"{stem}.gif", save_all=True, append_images=images[1:], duration=100, loop=0, optimize=True)
+    full_frames = sorted((folder / "PreviewFrames").glob("*.png"))
+    if not full_frames:
+        raise RuntimeError("Render the full cycle before creating previews: " + str(folder))
+    images = [Image.open(file).convert("RGB") for file in full_frames]
+    # GIF delay uses 10 ms units. 30/30/40 ms totals exactly 30 frames per second.
+    durations = [30 if i % 3 != 2 else 40 for i in range(len(images))]
+    if stem == "AshenWatcher_Dash":
+        durations[-1] += 500
+    images[0].save(folder / f"{stem}.gif", save_all=True, append_images=images[1:], duration=durations, loop=0, optimize=True)
     for image in images:
         image.close()

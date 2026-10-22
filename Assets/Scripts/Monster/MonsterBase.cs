@@ -7,6 +7,8 @@ public class MonsterBase : MonoBehaviour
     [Header("怪物配置")]
     [SerializeField] private float moveSpeed = 2f;
     [SerializeField] private float stopDistance = 1.2f;
+
+    public static int AliveCount{get;private set;}
     
      private Vector3 moveDir;
 
@@ -67,11 +69,13 @@ public class MonsterBase : MonoBehaviour
     {
         hp=maxHp;
         EventCenter.instance.AddEventListener(GameEvent.PlayerAttack,OnPlayerAttack);
+        AliveCount++;
     }
 
     private void OnDisable()
     {
         EventCenter.instance.RemoveEventListener(GameEvent.PlayerAttack,OnPlayerAttack);
+        AliveCount--;
     }
 
     /// <summary>
