@@ -8,6 +8,8 @@ public class MonsterBase : MonoBehaviour
     [SerializeField] private float moveSpeed = 2f;
     [SerializeField] private float stopDistance = 1.2f;
 
+    //HideInInspector:让一个变量在 Inspector 面板中隐藏，但依然会被 Unity 序列化（即数据会被保存和加载）
+    [HideInInspector]public GameObject prefabSource;
     public static int AliveCount{get;private set;}
     
      private Vector3 moveDir;
@@ -149,6 +151,6 @@ public class MonsterBase : MonoBehaviour
     /// </summary>
     private void Die()
     {
-        Destroy(gameObject);
+        MonsterPool.Recycle(gameObject);
     }
 }

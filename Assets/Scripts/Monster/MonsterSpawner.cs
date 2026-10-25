@@ -52,7 +52,7 @@ public class MonsterSpawner : MonoBehaviour
         Vector3 spawnPositon = GetSpawnPosition();
         GameObject prefab = monsterPrefabs[Random.Range(0, monsterPrefabs.Length)];
         //Quaternion.identity —— "没有旋转"
-        Instantiate(prefab, spawnPositon, Quaternion.identity);
+        MonsterPool.Spawn(prefab, spawnPositon, Quaternion.identity);
     }
 
     /// <summary>
