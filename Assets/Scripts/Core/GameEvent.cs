@@ -24,6 +24,11 @@ public static class GameEvent
     /// </summary>
     public const string PlayerAttack="PlayerAttack";
 
+    /// <summary>
+    /// 怪物攻击玩家的事件
+    /// </summary>
+    public const string MonsterAttackPlayer="MonsterAttackPlayer";
+
     #region UI
     /// <summary>
     /// 点击开始游戏

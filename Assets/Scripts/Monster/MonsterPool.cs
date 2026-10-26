@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
@@ -42,7 +41,7 @@ public static class MonsterPool
             MonsterBase monsterBase=go.GetComponent<MonsterBase>();
             if(monsterBase!=null)monsterBase.prefabSource=prefab;
         }
-        go.transform.SetLocalPositionAndRotation(position,rotation);
+        go.transform.SetPositionAndRotation(position,rotation);
         go.SetActive(true);
         return go;
 

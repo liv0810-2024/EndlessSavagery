@@ -24,7 +24,7 @@ ModelImporter:
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
     importConstraints: 0
-    animationCompression: 1
+    animationCompression: 0
     aCLCompressionLevel: 3
     aCLCurvePrecision: 0.01
     aCLFastSampleMode: 1
@@ -34,7 +34,42 @@ ModelImporter:
     animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 18
+      name: PlayerOrbitBlades_Orbit
+      takeName: Scene
+      internalID: -623603649343465320
+      firstFrame: 1
+      lastFrame: 25
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      lockToRoot: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      intervals: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+      additiveType: 0
+      basePoseType: 0
+      additiveSelectedAnimation: {instanceID: 0}
+      additiveSelectedAnimationFrameIndex: 0
     isReadable: 0
     tuanjieGIEnable: 0
     tuanjieGIGenSDFFactor: 1
@@ -45,16 +80,16 @@ ModelImporter:
     lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
-    totalVerticesCount: 1754
-    totalTrianglesCount: 944
+    totalVerticesCount: 1488
+    totalTrianglesCount: 984
     addColliders: 0
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1
     importPhysicalCameras: 1
     importVisibility: 1
     importBlendShapes: 1
-    importCameras: 1
-    importLights: 1
+    importCameras: 0
+    importLights: 0
     nodeNameCollisionStrategy: 1
     fileIdsGeneration: 2
     swapUVChannels: 0
@@ -92,79 +127,251 @@ ModelImporter:
       ignoreSimpleMesh: 0
       transformScaleState: 0
       isPossibleOverflow: 0
-    virtualGeometryPlatformSettings: []
+    virtualGeometryPlatformSettings:
+    - serializedVersion: 0
+      overridden: 0
+      ignorePlatformSupport: 0
+      buildTarget: DefaultVirtualGeometryPlatform
+      positionPrecision: -2147483648
+      normalPrecision: -2147483648
+      tangentPrecision: -2147483648
+      detailedTriangleCount: 0
+      detailedVertexCount: 0
+      rootPageSize: 0
+      streamablePageSize: 0
+      reserveTrianglePercent: 100
+      reserveDetailLevel: 0
+    - serializedVersion: 0
+      overridden: 0
+      ignorePlatformSupport: 0
+      buildTarget: Standalone
+      positionPrecision: -2147483648
+      normalPrecision: -2147483648
+      tangentPrecision: -2147483648
+      detailedTriangleCount: 0
+      detailedVertexCount: 0
+      rootPageSize: 0
+      streamablePageSize: 0
+      reserveTrianglePercent: 100
+      reserveDetailLevel: 0
+    - serializedVersion: 0
+      overridden: 0
+      ignorePlatformSupport: 0
+      buildTarget: iPhone
+      positionPrecision: -2147483648
+      normalPrecision: -2147483648
+      tangentPrecision: -2147483648
+      detailedTriangleCount: 0
+      detailedVertexCount: 0
+      rootPageSize: 0
+      streamablePageSize: 0
+      reserveTrianglePercent: 100
+      reserveDetailLevel: 0
+    - serializedVersion: 0
+      overridden: 0
+      ignorePlatformSupport: 0
+      buildTarget: Android
+      positionPrecision: -2147483648
+      normalPrecision: -2147483648
+      tangentPrecision: -2147483648
+      detailedTriangleCount: 0
+      detailedVertexCount: 0
+      rootPageSize: 0
+      streamablePageSize: 0
+      reserveTrianglePercent: 100
+      reserveDetailLevel: 0
     selectedVGMeshes:
     - index: 0
-      meshName: OrbitBlade_1
+      meshName: ArcBlade_1
       lodLevel: 0
       meshGeometryBuffer: 0
     - index: 1
-      meshName: OrbitBlade_2
+      meshName: ArcBlade_2
       lodLevel: 0
       meshGeometryBuffer: 0
     - index: 2
-      meshName: OrbitBlade_3
+      meshName: ArcBlade_3
       lodLevel: 0
       meshGeometryBuffer: 0
     - index: 3
-      meshName: OrbitBlade_4
+      meshName: ArcBlade_4
       lodLevel: 0
       meshGeometryBuffer: 0
     - index: 4
-      meshName: OrbitEnergyTrace
+      meshName: BladeEdge_1
       lodLevel: 0
       meshGeometryBuffer: 0
     - index: 5
-      meshName: OrbitMount_1
+      meshName: BladeEdge_2
       lodLevel: 0
       meshGeometryBuffer: 0
     - index: 6
-      meshName: OrbitMount_2
+      meshName: BladeEdge_3
       lodLevel: 0
       meshGeometryBuffer: 0
     - index: 7
-      meshName: OrbitMount_3
+      meshName: BladeEdge_4
       lodLevel: 0
       meshGeometryBuffer: 0
     - index: 8
-      meshName: OrbitMount_4
+      meshName: BronzeMount_1
+      lodLevel: 0
+      meshGeometryBuffer: 0
+    - index: 9
+      meshName: BronzeMount_1.001
+      lodLevel: 0
+      meshGeometryBuffer: 0
+    - index: 10
+      meshName: BronzeMount_1.002
+      lodLevel: 0
+      meshGeometryBuffer: 0
+    - index: 11
+      meshName: BronzeMount_2
+      lodLevel: 0
+      meshGeometryBuffer: 0
+    - index: 12
+      meshName: BronzeMount_2.001
+      lodLevel: 0
+      meshGeometryBuffer: 0
+    - index: 13
+      meshName: BronzeMount_2.002
+      lodLevel: 0
+      meshGeometryBuffer: 0
+    - index: 14
+      meshName: BronzeMount_3
+      lodLevel: 0
+      meshGeometryBuffer: 0
+    - index: 15
+      meshName: BronzeMount_3.001
+      lodLevel: 0
+      meshGeometryBuffer: 0
+    - index: 16
+      meshName: BronzeMount_3.002
+      lodLevel: 0
+      meshGeometryBuffer: 0
+    - index: 17
+      meshName: BronzeMount_4
+      lodLevel: 0
+      meshGeometryBuffer: 0
+    - index: 18
+      meshName: BronzeMount_4.001
+      lodLevel: 0
+      meshGeometryBuffer: 0
+    - index: 19
+      meshName: BronzeMount_4.002
+      lodLevel: 0
+      meshGeometryBuffer: 0
+    - index: 20
+      meshName: TaperedTrail_1
+      lodLevel: 0
+      meshGeometryBuffer: 0
+    - index: 21
+      meshName: TaperedTrail_2
+      lodLevel: 0
+      meshGeometryBuffer: 0
+    - index: 22
+      meshName: TaperedTrail_3
+      lodLevel: 0
+      meshGeometryBuffer: 0
+    - index: 23
+      meshName: TaperedTrail_4
       lodLevel: 0
       meshGeometryBuffer: 0
     supportVGMeshes:
     - index: 0
-      meshName: OrbitBlade_1
+      meshName: ArcBlade_1
       lodLevel: 0
       meshGeometryBuffer: 0
     - index: 1
-      meshName: OrbitBlade_2
+      meshName: ArcBlade_2
       lodLevel: 0
       meshGeometryBuffer: 0
     - index: 2
-      meshName: OrbitBlade_3
+      meshName: ArcBlade_3
       lodLevel: 0
       meshGeometryBuffer: 0
     - index: 3
-      meshName: OrbitBlade_4
+      meshName: ArcBlade_4
       lodLevel: 0
       meshGeometryBuffer: 0
     - index: 4
-      meshName: OrbitEnergyTrace
+      meshName: BladeEdge_1
       lodLevel: 0
       meshGeometryBuffer: 0
     - index: 5
-      meshName: OrbitMount_1
+      meshName: BladeEdge_2
       lodLevel: 0
       meshGeometryBuffer: 0
     - index: 6
-      meshName: OrbitMount_2
+      meshName: BladeEdge_3
       lodLevel: 0
       meshGeometryBuffer: 0
     - index: 7
-      meshName: OrbitMount_3
+      meshName: BladeEdge_4
       lodLevel: 0
       meshGeometryBuffer: 0
     - index: 8
-      meshName: OrbitMount_4
+      meshName: BronzeMount_1
+      lodLevel: 0
+      meshGeometryBuffer: 0
+    - index: 9
+      meshName: BronzeMount_1.001
+      lodLevel: 0
+      meshGeometryBuffer: 0
+    - index: 10
+      meshName: BronzeMount_1.002
+      lodLevel: 0
+      meshGeometryBuffer: 0
+    - index: 11
+      meshName: BronzeMount_2
+      lodLevel: 0
+      meshGeometryBuffer: 0
+    - index: 12
+      meshName: BronzeMount_2.001
+      lodLevel: 0
+      meshGeometryBuffer: 0
+    - index: 13
+      meshName: BronzeMount_2.002
+      lodLevel: 0
+      meshGeometryBuffer: 0
+    - index: 14
+      meshName: BronzeMount_3
+      lodLevel: 0
+      meshGeometryBuffer: 0
+    - index: 15
+      meshName: BronzeMount_3.001
+      lodLevel: 0
+      meshGeometryBuffer: 0
+    - index: 16
+      meshName: BronzeMount_3.002
+      lodLevel: 0
+      meshGeometryBuffer: 0
+    - index: 17
+      meshName: BronzeMount_4
+      lodLevel: 0
+      meshGeometryBuffer: 0
+    - index: 18
+      meshName: BronzeMount_4.001
+      lodLevel: 0
+      meshGeometryBuffer: 0
+    - index: 19
+      meshName: BronzeMount_4.002
+      lodLevel: 0
+      meshGeometryBuffer: 0
+    - index: 20
+      meshName: TaperedTrail_1
+      lodLevel: 0
+      meshGeometryBuffer: 0
+    - index: 21
+      meshName: TaperedTrail_2
+      lodLevel: 0
+      meshGeometryBuffer: 0
+    - index: 22
+      meshName: TaperedTrail_3
+      lodLevel: 0
+      meshGeometryBuffer: 0
+    - index: 23
+      meshName: TaperedTrail_4
       lodLevel: 0
       meshGeometryBuffer: 0
   tangentSpace:

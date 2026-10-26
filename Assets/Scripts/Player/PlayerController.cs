@@ -14,6 +14,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float attackRange = 2.5f;
     [SerializeField] private float attackCD = 0.8f;
 
+    [Header("生命属性")]
+    [SerializeField] private float maxHp = 100f;
+    [SerializeField] private float invincibleTime = 1f; //受伤之后的无敌时间
+    private float hp; //当前血量
+    private float invincibleTimer; //无敌时间的计时器
+
     [Header("引用")]
     //普通 int 是数字，LayerMask 是"层的集合"。你在 Inspector 里看到的是一个下拉框（可以勾多个层），声明成 LayerMask 就是为了拿到这个下拉框
     [SerializeField] private LayerMask monsterLayer;  // 怪物所在的 Layer
@@ -43,10 +49,16 @@ public class PlayerController : MonoBehaviour
             // 关闭根运动：位置由本脚本说了算，动画只负责姿势，避免双倍位移
             visualAnimator.applyRootMotion = false;
         }
+        hp = maxHp;
+        EventCenter.instance.AddEventListener(GameEvent.MonsterAttackPlayer, OnMonsterAttack);
     }
 
     private void Update()
     {
+        if (invincibleTimer > 0f)
+        {
+            invincibleTimer -= Time.deltaTime;
+        }
         if (CanAct())
         {
             HandleMove();
@@ -58,6 +70,11 @@ public class PlayerController : MonoBehaviour
             moveDir = Vector3.zero;
         }
         UpdateAnimator();
+    }
+
+    private void OnDestroy()
+    {
+        EventCenter.instance.RemoveEventListener(GameEvent.MonsterAttackPlayer, OnMonsterAttack);
     }
 
     /// <summary>
@@ -122,15 +139,37 @@ public class PlayerController : MonoBehaviour
         // 以自身为球心，attackRange 为半径，只检测 Monster 层
         Collider[] hits = Physics.OverlapSphere(transform.position, attackRange, monsterLayer);
         if (hits.Length == 0) return;
-        PlayerAttackData data=new PlayerAttackData
+        PlayerAttackData data = new PlayerAttackData
         {
-            damage=atk,
-            hits=hits
+            damage = atk,
+            hits = hits
         };
         EventCenter.instance.TriggerEvent(GameEvent.PlayerAttack, data);
         //Debug.Log($"[Player] 发动攻击，命中 {hits.Length} 个目标，伤害 {atk}");
     }
 
+    /// <summary>
+    /// 玩家受到怪物攻击的逻辑
+    /// </summary>
+    /// <param name="param"></param>
+    private void OnMonsterAttack(object param)
+    {
+        if (GameManager.instance.CurrentState != GameState.GamePlaying) return;
+        if (invincibleTimer > 0f) return;
+        float damage = (float)param;
+        hp -= damage;
+        invincibleTimer = invincibleTime;
+        Debug.Log($"玩家已被扣除{damage}的血量，剩余{hp}血量");
+        if (hp <= 0) Die();
+    }
+
+    /// <summary>
+    /// 玩家死亡
+    /// </summary>
+    private void Die()
+    {
+        GameManager.instance.GameOver();
+    }
     /// <summary>
     /// 在 Scene 视图画出攻击范围（只在选中时显示）
     /// </summary>

@@ -2,29 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.SocialPlatforms;
 
 public class GameManager : Singleton<GameManager>
 {
     /// <summary>
     /// 当前游戏状态
     /// </summary>
-     public GameState CurrentState{get;private set;}
+    public GameState CurrentState { get; private set; }
 
     protected override void Awake()
     {
         base.Awake();
-        if(instance!=this)return;
+        if (instance != this) return;
         //监听UI按钮
-        EventCenter.instance.AddEventListener(GameEvent.StartGameClick,OnStartGameClick);
-        EventCenter.instance.AddEventListener(GameEvent.BackToLoginClick,OnBackToLoginClick);
-        EventCenter.instance.AddEventListener(GameEvent.ResumeClick,OnResumeClick);
+        EventCenter.instance.AddEventListener(GameEvent.StartGameClick, OnStartGameClick);
+        EventCenter.instance.AddEventListener(GameEvent.BackToLoginClick, OnBackToLoginClick);
+        EventCenter.instance.AddEventListener(GameEvent.ResumeClick, OnResumeClick);
+        EventCenter.instance.AddEventListener(GameEvent.RestartClick, OnRestartClick);
     }
 
     private void OnDestroy()
     {
         EventCenter.instance.RemoveEventListener(GameEvent.StartGameClick, OnStartGameClick);
         EventCenter.instance.RemoveEventListener(GameEvent.BackToLoginClick, OnBackToLoginClick);
-        EventCenter.instance.RemoveEventListener(GameEvent.ResumeClick, OnResumeClick);  
+        EventCenter.instance.RemoveEventListener(GameEvent.ResumeClick, OnResumeClick);
+        EventCenter.instance.RemoveEventListener(GameEvent.RestartClick, OnRestartClick);
     }
     //游戏状态初始化
     private void Start()
@@ -38,26 +41,28 @@ public class GameManager : Singleton<GameManager>
     }
 
     //事件回调
-    private void OnStartGameClick(object param)=>StartGame();
-    private void OnBackToLoginClick(object param)=>BackToLogin();
-    private void OnResumeClick(object param)=>ResumeGame(); 
+    private void OnStartGameClick(object param) => StartGame();
+    private void OnBackToLoginClick(object param) => BackToLogin();
+    private void OnResumeClick(object param) => ResumeGame();
+    private void OnRestartClick(object param) => RestartGame();
+
     /// <summary>
     /// 切换游戏状态
     /// </summary>
     /// <param name="gameState"></param>
     public void SwitchState(GameState newStates)
     {
-        GameStateChangeData data=new GameStateChangeData()
+        GameStateChangeData data = new GameStateChangeData()
         {
-            oldState=CurrentState,
-            newState=newStates
+            oldState = CurrentState,
+            newState = newStates
         };
-        CurrentState=newStates;
+        CurrentState = newStates;
         //打日志：随时能在 Console 看到状态变成了什么，方便排查"为什么角色不动"这类问题
         Debug.Log($"[GameManager] 状态切换：{data.oldState} → {data.newState}");
         //广播切换状态
-        EventCenter.instance.TriggerEvent(GameEvent.GameStateChange,data);
-    } 
+        EventCenter.instance.TriggerEvent(GameEvent.GameStateChange, data);
+    }
 
     #region 各个游戏状态的转换
     /// <summary>
@@ -65,7 +70,7 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     public void StartGame()
     {
-        Time.timeScale=1;
+        Time.timeScale = 1;
         //加载场景
         SceneManager.LoadScene("GameScene");
         SwitchState(GameState.GamePlaying);
@@ -76,7 +81,7 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     public void BackToLogin()
     {
-        Time.timeScale=1;
+        Time.timeScale = 1;
         SceneManager.LoadScene("GameLogin");
         SwitchState(GameState.Login);
     }
@@ -89,9 +94,9 @@ public class GameManager : Singleton<GameManager>
         if (CurrentState == GameState.GamePlaying)
         {
             SwitchState(GameState.GamePause);
-            Time.timeScale=0; //暂停时间
+            Time.timeScale = 0; //暂停时间
             EventCenter.instance.TriggerEvent(GameEvent.GamePause);
-        }  
+        }
     }
 
     /// <summary>
@@ -102,10 +107,24 @@ public class GameManager : Singleton<GameManager>
         if (CurrentState == GameState.GamePause)
         {
             SwitchState(GameState.GamePlaying);
-            Time.timeScale=1;
+            Time.timeScale = 1;
             EventCenter.instance.TriggerEvent(GameEvent.ResumGame);
         }
     }
+
+    public void GameOver()
+    {
+        if (CurrentState != GameState.GamePlaying) return;
+        SwitchState(GameState.GameOver);
+        Time.timeScale = 0;
+    }
+
+    public void RestartGame()
+    {
+        Time.timeScale=1f;
+        SceneManager.LoadScene("GameScene");
+        SwitchState(GameState.GamePlaying);
+    }
     #endregion
-    
+
 }

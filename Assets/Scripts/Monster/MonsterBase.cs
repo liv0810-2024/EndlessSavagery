@@ -8,6 +8,12 @@ public class MonsterBase : MonoBehaviour
     [SerializeField] private float moveSpeed = 2f;
     [SerializeField] private float stopDistance = 1.2f;
 
+    [Header("攻击玩家")]
+    [SerializeField]private float attackDamage=10f;
+    [SerializeField]private float attackInterval=1.5f;
+    [SerializeField]private float attackDistance=1.5f;
+    private float attackTimer; //攻击用的计时器
+
     //HideInInspector:让一个变量在 Inspector 面板中隐藏，但依然会被 Unity 序列化（即数据会被保存和加载）
     [HideInInspector]public GameObject prefabSource;
     public static int AliveCount{get;private set;}
@@ -59,6 +65,7 @@ public class MonsterBase : MonoBehaviour
         if (CanAct() && target != null)
         {
             HandleChase();
+            HandleAttack();
         }
         else
         {
@@ -152,5 +159,19 @@ public class MonsterBase : MonoBehaviour
     private void Die()
     {
         MonsterPool.Recycle(gameObject);
+    }
+
+    /// <summary>
+    /// 怪物攻击玩家
+    /// </summary>
+    private void HandleAttack()
+    {
+        attackTimer+=Time.deltaTime;
+        Vector3 toTarget=target.position-transform.position;
+        toTarget.y=0f;
+        if(toTarget.sqrMagnitude>attackDistance*attackDistance)return;
+        if(attackTimer<attackInterval)return;
+        attackTimer=0f;
+        EventCenter.instance.TriggerEvent(GameEvent.MonsterAttackPlayer,attackDamage);
     }
 }

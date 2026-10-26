@@ -68,7 +68,7 @@ public class MonsterSpawner : MonoBehaviour
         // 随机角度（0 ~ 2π = 一整圈）和随机半径
         float angle = Random.Range(0, Mathf.PI * 2f);
         float distance = Random.Range(minDistance, maxDistance);
-        Vector3 offest = new Vector3(Mathf.Cos(angle), 0f, Mathf.Sin(distance))*distance;
+        Vector3 offest = new Vector3(Mathf.Cos(angle), 0f, Mathf.Sin(angle))*distance;
         Vector3 pos = player.position + offest;
         pos.y = player.position.y;
         return pos;

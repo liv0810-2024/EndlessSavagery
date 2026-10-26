@@ -1,6 +1,0 @@
-UnityEngine.MissingComponentException: There is no 'Animator' attached to the "WildernessSlime" game object, but a script is trying to access it.
-You probably need to add a Animator to the game object "WildernessSlime". Or your script needs to check if the component is attached before using it.
-  at (wrapper managed-to-native) UnityEngine.Animator.set_runtimeAnimatorController(UnityEngine.Animator,UnityEngine.RuntimeAnimatorController)
-  at CombatAssetDelivery.Visual (System.String path, System.String name) [0x00047] in D:\TuanJie\Project\EndlessSavagery\Assets\Editor\CombatAssetDelivery.cs:60 
-  at CombatAssetDelivery.Build () [0x00052] in D:\TuanJie\Project\EndlessSavagery\Assets\Editor\CombatAssetDelivery.cs:106 
-  at CombatAssetDelivery.Poll () [0x0002c] in D:\TuanJie\Project\EndlessSavagery\Assets\Editor\CombatAssetDelivery.cs:19 

@@ -98,6 +98,33 @@ public static class CombatAssetDelivery
         try { Check(loaded,clip,report); Require(loaded.GetComponent<Animator>().runtimeAnimatorController==null,"Controller should be unassigned"); }
         finally { PrefabUtility.UnloadPrefabContents(loaded); }
     }
+    static void ExtractMaterials(GameObject go, string directory)
+    {
+        Directory.CreateDirectory(directory);
+        foreach(var renderer in go.GetComponentsInChildren<Renderer>())
+        {
+            var materials=renderer.sharedMaterials;
+            for(int i=0;i<materials.Length;i++)
+            {
+                var source=materials[i];
+                Require(source != null,"Missing source material: "+renderer.name);
+                string path=directory+"/"+source.name+".mat";
+                var material=AssetDatabase.LoadAssetAtPath<Material>(path);
+                if(material==null){material=new Material(source);AssetDatabase.CreateAsset(material,path);}
+                // FBX imports Blender emission strength directly. Keep small accents
+                // readable without clipping to solid neon in the built-in renderer.
+                if(material.HasProperty("_EmissionColor"))
+                {
+                    var emission=material.GetColor("_EmissionColor");
+                    var peak=Mathf.Max(emission.r,Mathf.Max(emission.g,emission.b));
+                    if(peak>.6f) material.SetColor("_EmissionColor",emission*(.6f/peak));
+                }
+                EditorUtility.SetDirty(material);
+                materials[i]=material;
+            }
+            renderer.sharedMaterials=materials;
+        }
+    }
     [MenuItem("Endless Savagery/Assets/Build Combat Delivery")]
     public static void Build()
     {
@@ -114,6 +141,7 @@ public static class CombatAssetDelivery
         {
             var clip=ImportClip(Model(name),name+"_Walk",true);
             var go=Visual(Model(name),name);
+            ExtractMaterials(go,"Assets/Characters/Monsters/"+name+"/Materials");
             int layer=LayerMask.NameToLayer("Monster");
             if(layer>=0) foreach(var t in go.GetComponentsInChildren<Transform>(true)) t.gameObject.layer=layer;
             var renderers=go.GetComponentsInChildren<Renderer>();
@@ -159,7 +187,53 @@ public static class CombatAssetDelivery
         Persist(vfx,"Assets/VFX/PlayerOrbitBlades/PlayerOrbitBlades.prefab",orbit,report);
         AssetDatabase.SaveAssets();
         File.WriteAllText("ArtSource/Delivery/validation.txt",report+"ALL_CHECKS_PASSED\n");
+        if(File.Exists("ArtSource/Delivery/build-error.txt")) File.Delete("ArtSource/Delivery/build-error.txt");
         Debug.Log("COMBAT_DELIVERY_COMPLETE");
+    }
+    // Review images use the actual saved prefabs and their Unity materials.
+    public static void BuildAndRender()
+    {
+        Build();
+        workScene=EditorSceneManager.NewPreviewScene();
+        var originalAmbient=RenderSettings.ambientLight;
+        var originalAmbientMode=RenderSettings.ambientMode;
+        try
+        {
+            Directory.CreateDirectory("ArtSource/Delivery/UnityPreviews");
+            foreach(var name in Names.Concat(new[]{"AshenWatcher_Dash","PlayerOrbitBlades"}))
+            {
+                string prefabPath=name=="PlayerOrbitBlades"?"Assets/VFX/PlayerOrbitBlades/PlayerOrbitBlades.prefab":"Assets/Prefabs/Monsters/"+name+".prefab";
+                var source=AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
+                var go=name=="AshenWatcher_Dash"?Visual("Assets/Characters/AshenWatcher/AshenWatcher_Animated.fbx",name):(GameObject)PrefabUtility.InstantiatePrefab(source,workScene);
+                string clipPath=name=="AshenWatcher_Dash"?"Assets/Characters/AshenWatcher/AshenWatcher_Dash.anim":name=="PlayerOrbitBlades"?"Assets/VFX/PlayerOrbitBlades/PlayerOrbitBlades_Orbit.anim":"Assets/Characters/Monsters/"+name+"/"+name+"_Walk.anim";
+                var clip=AssetDatabase.LoadAssetAtPath<AnimationClip>(clipPath);
+                clip.SampleAnimation(go,clip.length*.27f);
+                var renderers=go.GetComponentsInChildren<Renderer>();
+                var bounds=renderers[0].bounds;foreach(var r in renderers)bounds.Encapsulate(r.bounds);
+                var cameraGo=new GameObject("AssetReviewCamera");SceneManager.MoveGameObjectToScene(cameraGo,workScene);
+                var camera=cameraGo.AddComponent<Camera>();
+                camera.cameraType=CameraType.Preview;camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=new Color(.055f,.065f,.09f);
+                camera.orthographic=true;camera.orthographicSize=Mathf.Max(bounds.size.y,Mathf.Max(bounds.size.x,bounds.size.z))*.72f;
+                camera.nearClipPlane=.01f;camera.farClipPlane=100;
+                camera.transform.position=bounds.center+new Vector3(4,4,6);camera.transform.LookAt(bounds.center);
+                camera.scene=workScene;
+                RenderSettings.ambientMode=UnityEngine.Rendering.AmbientMode.Flat;
+                RenderSettings.ambientLight=new Color(.45f,.45f,.5f);
+                var lightGo=new GameObject("AssetReviewLight");SceneManager.MoveGameObjectToScene(lightGo,workScene);
+                var light=lightGo.AddComponent<Light>();light.type=LightType.Directional;light.intensity=1.35f;light.transform.rotation=Quaternion.Euler(35,-35,0);
+                var fillGo=new GameObject("AssetReviewFill");SceneManager.MoveGameObjectToScene(fillGo,workScene);
+                var fill=fillGo.AddComponent<Light>();fill.type=LightType.Directional;fill.intensity=.7f;fill.color=new Color(.7f,.78f,1f);fill.transform.rotation=Quaternion.Euler(25,150,0);
+                var target=new RenderTexture(768,768,24,RenderTextureFormat.ARGB32);
+                target.Create();camera.targetTexture=target;camera.Render();
+                var previous=RenderTexture.active;RenderTexture.active=target;
+                var texture=new Texture2D(768,768,TextureFormat.RGB24,false);texture.ReadPixels(new Rect(0,0,768,768),0,0);texture.Apply();
+                File.WriteAllBytes("ArtSource/Delivery/UnityPreviews/"+name+".png",texture.EncodeToPNG());
+                RenderTexture.active=previous;camera.targetTexture=null;target.Release();
+                Object.DestroyImmediate(target);Object.DestroyImmediate(texture);Object.DestroyImmediate(cameraGo);Object.DestroyImmediate(lightGo);Object.DestroyImmediate(fillGo);Object.DestroyImmediate(go);
+            }
+            Debug.Log("COMBAT_UNITY_PREVIEWS_COMPLETE");
+        }
+        finally { RenderSettings.ambientLight=originalAmbient;RenderSettings.ambientMode=originalAmbientMode;EditorSceneManager.ClosePreviewScene(workScene); }
     }
     public static void Inspect()
     {
