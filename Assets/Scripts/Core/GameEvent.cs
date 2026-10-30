@@ -29,6 +29,11 @@ public static class GameEvent
     /// </summary>
     public const string MonsterAttackPlayer="MonsterAttackPlayer";
 
+    /// <summary>
+    /// 波次变换事件
+    /// </summary>
+    public const string WaveChange="WaveChange"; 
+
     #region UI
     /// <summary>
     /// 点击开始游戏
@@ -49,6 +54,11 @@ public static class GameEvent
     /// 返回主界面
     /// </summary>
     public const string BackToLoginClick="BackToLoginClick";
+
+    /// <summary>
+    /// 玩家血量改变UI事件
+    /// </summary>
+    public const string PalyerHpChange="PalyerHpChange";
     
     #endregion
 }

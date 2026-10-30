@@ -13,6 +13,7 @@ public class MonsterBase : MonoBehaviour
     [SerializeField]private float attackInterval=1.5f;
     [SerializeField]private float attackDistance=1.5f;
     private float attackTimer; //攻击用的计时器
+   
 
     //HideInInspector:让一个变量在 Inspector 面板中隐藏，但依然会被 Unity 序列化（即数据会被保存和加载）
     [HideInInspector]public GameObject prefabSource;
@@ -31,6 +32,7 @@ public class MonsterBase : MonoBehaviour
     /// 当前血量
     /// </summary>
     private float hp;
+     private float hpMultiplier=1f; //血量倍率
 
     private static readonly int SpeedHash = Animator.StringToHash("Speed");
 
@@ -76,7 +78,7 @@ public class MonsterBase : MonoBehaviour
 
     private void OnEnable()
     {
-        hp=maxHp;
+        hp=maxHp*hpMultiplier;
         EventCenter.instance.AddEventListener(GameEvent.PlayerAttack,OnPlayerAttack);
         AliveCount++;
     }
@@ -152,6 +154,15 @@ public class MonsterBase : MonoBehaviour
             Die();
         }
     }
+
+    /// <summary>
+/// 设置血量倍率（由刷怪器在生成时调用）
+/// </summary>
+public void SetHpMultiplier(float multiplier)
+{
+    hpMultiplier = Mathf.Max(1f, multiplier);   // 倍率不能小于 1
+    hp = maxHp * hpMultiplier;                  // 立刻按新倍率回满血
+}
 
     /// <summary>
     /// 死亡

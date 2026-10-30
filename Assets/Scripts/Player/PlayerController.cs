@@ -1,3 +1,4 @@
+using System.Xml.Serialization;
 using UnityEngine;
 
 /// <summary>
@@ -15,9 +16,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float attackCD = 0.8f;
 
     [Header("生命属性")]
-    [SerializeField] private float maxHp = 100f;
+    [SerializeField] public float maxHp = 100f;
     [SerializeField] private float invincibleTime = 1f; //受伤之后的无敌时间
-    private float hp; //当前血量
+    public float hp; //当前血量
     private float invincibleTimer; //无敌时间的计时器
 
     [Header("引用")]
@@ -51,6 +52,11 @@ public class PlayerController : MonoBehaviour
         }
         hp = maxHp;
         EventCenter.instance.AddEventListener(GameEvent.MonsterAttackPlayer, OnMonsterAttack);
+    }
+
+    private void Start()
+    {
+        BroadcastHp();
     }
 
     private void Update()
@@ -160,6 +166,7 @@ public class PlayerController : MonoBehaviour
         hp -= damage;
         invincibleTimer = invincibleTime;
         Debug.Log($"玩家已被扣除{damage}的血量，剩余{hp}血量");
+        BroadcastHp();
         if (hp <= 0) Die();
     }
 
@@ -177,5 +184,18 @@ public class PlayerController : MonoBehaviour
     {
         Gizmos.color = new Color(1f, 0.3f, 0.3f, 0.6f);   // 红色（带透明度）
         Gizmos.DrawWireSphere(transform.position, attackRange);
+    }
+
+    /// <summary>
+    /// 把当前血量打包成事件发送出去
+    /// </summary>
+    private void BroadcastHp()
+    {
+        PlayerHpData data=new PlayerHpData
+        {
+            currentHp=hp,
+            maxHp=maxHp
+        };
+        EventCenter.instance.TriggerEvent(GameEvent.PalyerHpChange,data);
     }
 }
