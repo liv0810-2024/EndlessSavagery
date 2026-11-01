@@ -1,4 +1,3 @@
-using System.Xml.Serialization;
 using UnityEngine;
 
 /// <summary>
@@ -16,9 +15,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float attackCD = 0.8f;
 
     [Header("生命属性")]
-    [SerializeField] public float maxHp = 100f;
+    [SerializeField] private float maxHp = 100f;
     [SerializeField] private float invincibleTime = 1f; //受伤之后的无敌时间
-    public float hp; //当前血量
+    private float hp; //当前血量
     private float invincibleTimer; //无敌时间的计时器
 
     [Header("引用")]
@@ -196,6 +195,6 @@ public class PlayerController : MonoBehaviour
             currentHp=hp,
             maxHp=maxHp
         };
-        EventCenter.instance.TriggerEvent(GameEvent.PalyerHpChange,data);
+        EventCenter.instance.TriggerEvent(GameEvent.PlayerHpChange,data);
     }
 }

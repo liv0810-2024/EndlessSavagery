@@ -185,4 +185,17 @@ public void SetHpMultiplier(float multiplier)
         attackTimer=0f;
         EventCenter.instance.TriggerEvent(GameEvent.MonsterAttackPlayer,attackDamage);
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    private void StartFlash()
+    {
+        
+    }
+
+    private void UpdateFlash()
+    {
+        
+    }
 }

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,7 +23,7 @@ public class UIGameHudPanel : MonoBehaviour
 
     private void Awake()
     {
-        EventCenter.instance.AddEventListener(GameEvent.PalyerHpChange, OnPlayerHpChange);
+        EventCenter.instance.AddEventListener(GameEvent.PlayerHpChange, OnPlayerHpChange);
         EventCenter.instance.AddEventListener(GameEvent.WaveChange, OnWaveChange);
     }
 
@@ -37,7 +35,7 @@ public class UIGameHudPanel : MonoBehaviour
 
     private void OnDestroy()
     {
-        EventCenter.instance.RemoveEventListener(GameEvent.PalyerHpChange, OnPlayerHpChange);
+        EventCenter.instance.RemoveEventListener(GameEvent.PlayerHpChange, OnPlayerHpChange);
         EventCenter.instance.RemoveEventListener(GameEvent.WaveChange, OnWaveChange);
     }
 
@@ -46,7 +44,7 @@ public class UIGameHudPanel : MonoBehaviour
     /// </summary>
     private void OnPlayerHpChange(object param)
     {
-        PlayerHpData data = (PlayerHpData)param;
+        PlayerHpData data = param as PlayerHpData;
         if (data == null) return;
         if (hpSlider != null)
         {

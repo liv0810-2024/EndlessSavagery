@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Video;
 
 public class MonsterSpawner : MonoBehaviour
 {
@@ -16,10 +15,10 @@ public class MonsterSpawner : MonoBehaviour
     [SerializeField] private float maxDistance = 13f;
 
     [Header("难度曲线")]
-    [SerializeField] private float waveDuration;
-    [SerializeField] private float spawnIntervaStep; //每波怪间隔减多少
-    [SerializeField] private float minSpawnInterval; //间隔最开能多少
-    [SerializeField] private int maxAliveStep; //每波上限加多少只
+    [SerializeField] private float waveDuration=30f;
+    [SerializeField] private float spawnIntervalStep=0.15f; //每波怪间隔减多少
+    [SerializeField] private float minSpawnInterval=0.4f; //间隔最小能多少
+    [SerializeField] private int maxAliveStep=3; //每波上限加多少只
     [SerializeField] private int maxAliveLimit = 60;            // 同屏上限阈值
     [SerializeField] private float hpGrowthPerWave = 0.2f;      // 每波血量增长比例
     //运行时状态
@@ -42,7 +41,7 @@ public class MonsterSpawner : MonoBehaviour
         }
         else
         {
-            Debug.Log("MonsterSpawner脚本找不到玩家");
+            Debug.LogError("MonsterSpawner脚本找不到玩家");
         }
         ApplyWave();
     }
@@ -56,7 +55,7 @@ public class MonsterSpawner : MonoBehaviour
         timer += Time.deltaTime;
         if (timer < currentSpawnInterval) return;
         timer = 0;
-        SpwanOne();
+        SpawnOne();
     }
 
     /// <summary>
@@ -65,12 +64,15 @@ public class MonsterSpawner : MonoBehaviour
     private void ApplyWave()
     {
         //算刷怪间隔
-        currentSpawnInterval = Mathf.Max(minSpawnInterval, spawnInterval - (currentWave - 1) * spawnIntervaStep);
+        currentSpawnInterval = Mathf.Max(minSpawnInterval, spawnInterval - (currentWave - 1) * spawnIntervalStep);
         //算同屏上限
         currentMaxAlive = Mathf.Min(maxAliveLimit, maxAlive + (currentWave - 1) * maxAliveStep);
         //血量倍率
         currentHpMultiplier = 1f + (currentWave - 1) * hpGrowthPerWave;
-        //日志＋广播
+        //日志
+        Debug.Log($"[MonsterSpawner] 第 {currentWave} 波：间隔 {currentSpawnInterval:F2}s，" +
+                  $"同屏上限 {currentMaxAlive}，血量 x{currentHpMultiplier:F2}");
+        //广播
         WaveData data = new WaveData
         {
             wave = currentWave,
@@ -95,7 +97,7 @@ public class MonsterSpawner : MonoBehaviour
     /// <summary>
     /// 生成怪物
     /// </summary>
-    private void SpwanOne()
+    private void SpawnOne()
     {
         Vector3 spawnPosition = GetSpawnPosition();
 

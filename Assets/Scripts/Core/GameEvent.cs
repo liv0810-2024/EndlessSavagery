@@ -58,7 +58,7 @@ public static class GameEvent
     /// <summary>
     /// 玩家血量改变UI事件
     /// </summary>
-    public const string PalyerHpChange="PalyerHpChange";
+    public const string PlayerHpChange="PlayerHpChange";
     
     #endregion
 }
